@@ -27,12 +27,10 @@ class MainBodyComponent extends Component{
                 "searchFor": foodsez
             })
         }) 
-        .then( resp => { return resp.json();})
-        .then( resp => {
-            console.log( resp);
-            this.setState({ 
-                recipes: resp.hits
-            }) 
+        .then( resp => resp.json() )
+        .then( resp => { 
+            this.setState({ recipes: resp.hits });
+            this.props.updateSearch();
         }); 
     }
 

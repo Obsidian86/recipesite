@@ -5,13 +5,23 @@ import MainBodyComponent from './components/MainBodyComponent';
 import { BrowserRouter as Router} from 'react-router-dom';
 
 class App extends Component {
+
+  constructor(){
+    super();
+    this.state = ({ hasSearched: false });
+  }
+
+  updateSearch =() => {
+    this.setState({ hasSearched: true });  
+  }
+
   render() {
     return (
       <Router>
         <div className="App">
-          <HeaderComponent />
+          <HeaderComponent hasSearched={this.state.hasSearched}/>
           <div className="center">
-            <MainBodyComponent />
+            <MainBodyComponent  updateSearch={this.updateSearch} />
           </div>
         </div>
       </Router>

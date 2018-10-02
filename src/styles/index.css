@@ -117,13 +117,26 @@ header{
 	position: fixed;
 	z-index: 1;
 }
+header h3{
+	font-size: 2.6em;
+}
 nav{ 
 	display: flex; 
-	margin: 20px; 
-	font-size: 1.2em; 
+	margin: 18px; 
+	font-size: 1.2em;  
+}
+.mobNav{ 
+	display: none; 
+	border: 2px solid white;
+	padding: 13px 19px 2px 19px; 
+	margin: 18px 10px; 
+	font-weight: bold;
+	font-size: 1.1em;
+	border-radius: 10px; 
+	height: 30px;
 }
 nav a{  
-    padding: 10px 20px; 
+    padding: 13px 17px; 
     display: block;
 }
 
@@ -175,6 +188,18 @@ nav a{
 }
 .isSaved{
 	border: 1px solid green; 
+}
+.isSaved:after{
+	content: "Saved";
+	color: #fff;
+	background-color: #c1c1c1;
+	position: absolute;
+	top: 10px; 
+	right: 10px; 
+	border-radius: 5px;
+	padding: 4px 10px 4px 8px;
+	font-style: italic;
+	text-shadow: 1px 1px 3px gray;
 }
 .recipeCard .title{ 
 	font-weight: bold;
@@ -240,18 +265,21 @@ nav a{
 }
 
 @media only screen and (max-width: 800px)  {
-	.recipeCard{ width: 90%; }
-	nav{ margin: 10px; font-size: 1.1em; }
-	nav a{ padding: 20px;}
-	h3{ text-align: center; margin-bottom: 25px; }
+	.recipeCard{ width: 90%; } 
+	.mainContent h3{ text-align: center; margin-bottom: 25px; }
 	.mainContent #searchBox{ padding: 10px; margin: 30px auto; }
-
 	.viewRecipe img{width: 100%; border-radius: 0; margin: 0 0 15px 0; }
 	.viewRecipe ul{ width: 98%;}
 	.btnGroup{ width: 99%; }
 	.btnGroup .btn{ width: 100%; }
 }
 
+@media only screen and (max-width: 650px)  {
+	nav{
+		display: none;
+	} 
+	.mobNav{ display: block; }
+}
 @media only screen and (max-width: 500px)  {
 	.mainContent{ width: 100%; border-radius: 0; }
 }
