@@ -1,0 +1,29 @@
+#shoppingList ol{ margin-bottom: 15px; }
+#shoppingList li{
+    padding: 5px 15px; 
+    display: flex; 
+    min-height: 65px;
+}
+
+#shoppingList li p{
+    width: 80%;
+    align-self: center;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+#shoppingList li:nth-child(odd){ 
+    background-color: #f1f1f1;
+} 
+#shoppingList li:hover{
+    background-color: rgb(185, 185, 185);
+}
+#shoppingList li .btn{
+    margin: 10px 10px 0 0; 
+    font-size: .8em;
+    width: auto;
+    display: none;
+    height: 47px; 
+}
+#shoppingList li:hover .btn{
+    display: block;
+}

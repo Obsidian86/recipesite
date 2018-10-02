@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+//import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import SearchComponent from './routes/SearchComponent';
 import ResultsComponent from './routes/ResultsComponent';
 import ViewCompnonent from './routes/ViewComponent'; 
 import ViewSaved from './routes/ViewSaved'; 
+import ShoppingList from './routes/ShoppingList'; 
 
 class MainBodyComponent extends Component{
 
@@ -14,7 +16,8 @@ class MainBodyComponent extends Component{
             savedRecipes: "",
             viewRec: "",
             viewList: "",
-            searchDone: false
+            searchDone: false,
+            shoppingList: []
         });
     }
  
@@ -44,6 +47,35 @@ class MainBodyComponent extends Component{
         })
     }
 
+    updateShoppingList=()=>{
+        this.setState({
+            shoppingList: [
+                {
+                    item: "Ham",
+                    status: "need"
+                },
+                {
+                    item: "Bread",
+                    status: "need"
+                },
+                {
+                    item: "Cheese",
+                    status: "need"
+                },
+                {
+                    item: "Rice",
+                    status: "need"
+                }
+            ] 
+        });
+    }
+
+    deleteListItem = (thisItem)=>{
+        this.setState({
+            shoppingList: this.state.shoppingList.filter((item, index)=> index !== thisItem )
+        });
+    }
+
     componentWillMount(){ this.updateSaved(); }
 
     setViewRec=(thisRec, viewList)=>{
@@ -60,6 +92,7 @@ class MainBodyComponent extends Component{
                     <Route exact path="/results" render={ (props) => <ResultsComponent results={this.state.recipes} title={"Recipes"} setViewRec={this.setViewRec} savedRecipes={ this.state.savedRecipes } searchDone={ this.state.searchDone } /> } />
                     <Route exact path="/view" render={ (props) => <ViewCompnonent results={this.state.recipes} viewRec={ this.state.viewRec } viewList={this.state.viewList} savedRecipes={ this.state.savedRecipes } updateSaved={this.updateSaved} /> } />
                     <Route exact path="/saved" render={ (props) => <ViewSaved savedRecipes={ this.state.savedRecipes } setViewRec={this.setViewRec} updateSaved={this.updateSaved} /> } />
+                    <Route exact path="/list" render={ (props) => <ShoppingList shoppingList={ this.state.shoppingList } updateShoppingList={this.updateShoppingList } deleteListItem ={ this.deleteListItem } />}  />
                 </div>
             ); 
     }
