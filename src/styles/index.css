@@ -129,7 +129,7 @@ h3{
 	color: #999;
 	padding: 15px 10px;
 }
-.mainContent #searchBox{
+.mainContent #searchBox, #listBox{
 	width: 85%;
 	margin: 55px auto; 
 	padding: 20px;  

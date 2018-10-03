@@ -80,6 +80,11 @@ class ViewCompnonent extends Component{
                 this.props.updateSaved();
             })
     }
+    addIngredients(){
+        for(let i=0; i<this.viewRecipe['ingredients'].length; i++){
+            this.props.addShoppingList( this.viewRecipe['ingredients'][i].text )
+        }
+    }
 
     render(props){ 
         if(this.state.recipeId === ""){
@@ -98,6 +103,7 @@ class ViewCompnonent extends Component{
                     <div className='btnGroup'> 
                         { this.backButton }
                         <a href={ this.viewRecipe.url } className='btn' target="_blank">Go to recipe</a> 
+                        <button className='btn' onClick={()=> this.addIngredients() }>Add ingredients to list</button>
                         { saveButton }
                     </div>
                 </div>

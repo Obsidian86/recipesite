@@ -1,15 +1,20 @@
-#shoppingList ol{ margin-bottom: 15px; }
+#shoppingList ol{ border-bottom: 2px solid #f1f1f1; }
 #shoppingList li{
     padding: 5px 15px; 
     display: flex; 
     min-height: 65px;
-}
-
+} 
 #shoppingList li p{
     width: 80%;
     align-self: center;
     font-weight: bold;
     font-size: 1.1em;
+    line-height: 1.4em;
+}
+#shoppingList .got{
+    text-decoration: line-through;
+    color: #d2d2d2;
+    font-style: italic;
 }
 #shoppingList li:nth-child(odd){ 
     background-color: #f1f1f1;
