@@ -239,8 +239,6 @@ h3{
 	header nav{ display: none; } 
 	header #ddNav nav{ display: block;} 
 	header .mobNav{ display: block; }
-}
-@media only screen and (max-width: 800px)  {
 	.recipeCard{ width: 90%; } 
 	.mainContent h3{ text-align: center; margin-bottom: 25px; }
 	.mainContent #searchBox{ padding: 10px; margin: 30px auto; }

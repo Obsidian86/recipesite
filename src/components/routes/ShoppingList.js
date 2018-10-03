@@ -9,6 +9,16 @@ class ShoppingList extends Component{
             document.getElementById("listBox").value = "";
         }
     }
+    emailList = () =>{
+        fetch('/sendlist', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json', 'Accept': 'application/json'},
+            body: JSON.stringify({
+                "list": this.props.shoppingList,
+                "sendTo": "christopher13e11@gmail.com"
+            })
+        })
+    }
     render(){
         let list;
         if( this.props.shoppingList.length < 1){
@@ -29,9 +39,9 @@ class ShoppingList extends Component{
                 <ol> { list } </ol>
                 <input type='text' placeholder='Add item to shopping list' id='listBox' className='textBlock'></input>
                 <div className='btnGroup'>  
-                <button className='btn' onClick={ () => this.handleAddNew() }>Add item</button>
+                <button className='btn' onClick={ ()=> this.handleAddNew() }>Add item</button>
                 <button className='btn' onClick={ ()=> this.props.updateShoppingList() }>temp update</button>
-                <button className='btn'>Send</button>
+                <button className='btn' onClick={ ()=> this.emailList() }>Send</button>
                 </div>
             </div>
         );

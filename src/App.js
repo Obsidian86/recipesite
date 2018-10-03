@@ -1,6 +1,6 @@
 import React, { Component } from 'react'; 
 import './styles/App.css';
-import HeaderComponent from './components/HeaderComponent';
+import HeaderComponent from './components/HeaderComponents/HeaderComponent';
 import MainBodyComponent from './components/MainBodyComponent';
 import { BrowserRouter as Router} from 'react-router-dom';
 import LoginComponent from './components/LoginComponent';

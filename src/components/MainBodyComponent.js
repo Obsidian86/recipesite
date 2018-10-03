@@ -22,7 +22,7 @@ class MainBodyComponent extends Component{
  
     onClick = (event, foodsez)=>{  
         this.setState({ searchDone: true });
-        fetch('/search', {
+        fetch('gr/search', {
             method: 'POST',
             headers: {'Content-Type':'application/json', 'Accept': 'application/json'},
             body: JSON.stringify({
