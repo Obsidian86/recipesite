@@ -8,15 +8,24 @@ class HeaderComponent extends Component{
         document.getElementById("ddNav").classList.toggle("slideIn");
     }
     render(){ 
-        let nav =<nav>
+        let nav = this.props.loggedIn ? 
+                <nav>
                     <Link to="/">Search</Link>
                     { this.props.hasSearched ? <Link to="/results">Results</Link> : null }
                     <Link to="/saved">Saved recipes</Link>
                     <Link to="/list">Shopping list</Link>
-                </nav>
+                    <Link to="/profile">Profile</Link>
+                    <Link to="/list" onClick={()=>{ this.props.logToggle(false) }}>Log out</Link>
+                </nav> : 
+                <nav>
+                    <Link to="/">Log in</Link>
+                </nav>;
+
        return(     
         <header>
-            <Link to="/"><h3>RecipeSite</h3></Link>
+            <Link to="/" className="logo">
+                <h3>RecipeSite</h3>
+            </Link>
             { nav }
             <div className="mobNav" onClick={()=> this.toggleMobNav() }>
                 <p id="toggleMobNav">Menu</p>

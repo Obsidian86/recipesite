@@ -27,7 +27,7 @@ class ShoppingList extends Component{
             <div id={"shoppingList"}>
                 <h3>Shopping list</h3> 
                 <ol> { list } </ol>
-                <input type='text' placeholder='Add item to shopping list' id='listBox'></input>
+                <input type='text' placeholder='Add item to shopping list' id='listBox' className='textBlock'></input>
                 <div className='btnGroup'>  
                 <button className='btn' onClick={ () => this.handleAddNew() }>Add item</button>
                 <button className='btn' onClick={ ()=> this.props.updateShoppingList() }>temp update</button>

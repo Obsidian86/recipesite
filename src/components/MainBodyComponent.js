@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-//import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import React, { Component } from 'react'; 
 import { Route } from 'react-router-dom';
 import SearchComponent from './routes/SearchComponent';
 import ResultsComponent from './routes/ResultsComponent';
@@ -96,8 +95,22 @@ class MainBodyComponent extends Component{
     render(){ 
             return(
                 <div className="mainContent">
-                    <Route exact path="/" render={(props) => <SearchComponent onClick={this.onClick} /> }/>
-                    <Route exact path="/results" render={ (props) => <ResultsComponent results={this.state.recipes} title={"Recipes"} setViewRec={this.setViewRec} savedRecipes={ this.state.savedRecipes } searchDone={ this.state.searchDone } /> } />
+                    <Route exact path="/" render={(props) => 
+                            <SearchComponent 
+                                onClick={this.onClick} 
+                            /> 
+                        }
+                    />
+                    <Route exact path="/results" render={ (props) => 
+                            <ResultsComponent 
+                                results={this.state.recipes} 
+                                title={"Recipes"} 
+                                setViewRec={this.setViewRec} 
+                                savedRecipes={ this.state.savedRecipes } 
+                                searchDone={ this.state.searchDone } 
+                            /> 
+                        } 
+                    />
                     <Route exact path="/view" render={ (props) => 
                             <ViewCompnonent 
                                 results={this.state.recipes} 
@@ -109,7 +122,14 @@ class MainBodyComponent extends Component{
                             /> 
                         } 
                     />
-                    <Route exact path="/saved" render={ (props) => <ViewSaved savedRecipes={ this.state.savedRecipes } setViewRec={this.setViewRec} updateSaved={this.updateSaved} /> } />
+                    <Route exact path="/saved" render={ (props) => 
+                            <ViewSaved 
+                                savedRecipes={ this.state.savedRecipes } 
+                                setViewRec={this.setViewRec} 
+                                updateSaved={this.updateSaved} 
+                            /> 
+                        } 
+                    />
                     <Route exact path="/list" render={ (props) => 
                             <ShoppingList 
                                 shoppingList={ this.state.shoppingList } 

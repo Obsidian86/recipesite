@@ -129,7 +129,7 @@ h3{
 	color: #999;
 	padding: 15px 10px;
 }
-.mainContent #searchBox, #listBox{
+.mainContent #searchBox, .textBlock{
 	width: 85%;
 	margin: 55px auto; 
 	padding: 20px;  
@@ -234,8 +234,12 @@ h3{
 @keyframes slideIn{
 	from { height: 0;}
 	to { height: auto;}
+} 
+@media only screen and (max-width: 880px)  {
+	header nav{ display: none; } 
+	header #ddNav nav{ display: block;} 
+	header .mobNav{ display: block; }
 }
-
 @media only screen and (max-width: 800px)  {
 	.recipeCard{ width: 90%; } 
 	.mainContent h3{ text-align: center; margin-bottom: 25px; }
@@ -244,12 +248,6 @@ h3{
 	.viewRecipe ul{ width: 98%;}
 	.btnGroup{ width: 99%; }
 	.btnGroup .btn{ width: 100%; }
-}
-
-@media only screen and (max-width: 650px)  {
-	header nav{ display: none; } 
-	header #ddNav nav{ display: block; }
-	header .mobNav{ display: block; }
 }
 @media only screen and (max-width: 500px)  {
 	.mainContent{ width: 100%; border-radius: 0; }
