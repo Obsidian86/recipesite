@@ -1,16 +1,54 @@
 import React, { Component } from 'react';
 
-class LoginComponent extends Component{ 
+class LoginComponent extends Component{
+    constructor(){
+        super();
+        this.state =({
+            logForm: true
+        })
+    } 
+    toggleForm = () =>{
+        this.setState({ logForm: !this.state.logForm });
+    }
+    componentWillUnmount(){
+        if( this.props.message.text !==""){
+            this.props.updateMessage("", "m_green");
+        } 
+    }
     render(){
+        let {logForm} = this.state; 
         return(
             <div className="mainContent">
-              <h3>Log in to continue</h3>
+                {this.props.message.text !== '' && <div id='message' className={this.props.message.cName}> <p>{ this.props.message.text}</p> </div> }
+              <h3>{ logForm ? "Log in to continue" : "Register new account" } </h3>
               <form action='#'>
-                <label htmlFor='username'>Username</label>
-                <input type='text' className='textBlock' />
-                <label htmlFor='password'>Password</label>
-                <input type='password' className='textBlock' />
-                <input type='submit' className='btn' onClick={()=>{this.props.logToggle(true)}} />
+                <label htmlFor='usernameField'>Email address</label>
+                <input type='email' className='textBlock' id="usernameField" required="required" autoComplete="on" placeholder="email@email.com" defaultValue='christopher13e11@gmail.com'/>
+                <label htmlFor='passwordField'>Password</label>
+                <input type='password' className='textBlock' id="passwordField" required="required" autoComplete="on" placeholder="*****" defaultValue="test" />
+                { !logForm && 
+                    <span>
+                        <label htmlFor='passwordField'>Re-Type password</label>
+                        <input type='password' className='textBlock' id="rePasswordField" required="required" autoComplete="new-password" placeholder="*****" /> 
+                    </span>}
+                <br /> 
+                <div className='btnGroup'> 
+                    <input type='submit' className='btn' onClick={(event)=>{
+                        event.preventDefault();
+                        if(logForm){
+                            this.props.logToggle(true, document.getElementById("usernameField").value, document.getElementById("passwordField").value)
+                        }else{
+                            this.props.logToggle(true, document.getElementById("usernameField").value, document.getElementById("passwordField").value, document.getElementById("rePasswordField").value)
+                        }
+                        
+                        }} />
+                    { logForm ? 
+                        <button className="btn" onClick={(event)=>{ event.preventDefault(); this.toggleForm(); }}>Sign up</button> : 
+                        <button className="btn btn_red" onClick={(event)=>{ event.preventDefault(); this.toggleForm(); }}>Back</button>
+                        }
+                    
+                </div>
+                <br />
               </form>
             </div> 
         )

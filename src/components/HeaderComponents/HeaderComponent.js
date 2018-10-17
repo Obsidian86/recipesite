@@ -9,17 +9,17 @@ class HeaderComponent extends Component{
         document.getElementById("ddNav").classList.toggle("slideIn");
     }
     render(){ 
-       return(     
-        <header>
-            <Link to="/" className="logo"> <h3>RecipeSite</h3> </Link>
-            <NavComponent {...this.props} />
-            <div className="mobNav" onClick={()=> this.toggleMobNav() }>
-                <p id="toggleMobNav">Menu</p>
-                <div id="ddNav">
-                    <NavComponent {...this.props} showMob={true} />
+       return( 
+            <header>
+                <Link to="/" className="logo"> <h3>RecipeSite</h3> </Link>
+                <NavComponent {...this.props} />
+                <div className="mobNav" onClick={()=> this.toggleMobNav() }>
+                    <p id="toggleMobNav">Menu</p>
+                    <div id="ddNav">
+                        <NavComponent {...this.props} showMob={true} />
+                    </div>
                 </div>
-            </div>
-        </header>
+            </header> 
         );
     }
 }

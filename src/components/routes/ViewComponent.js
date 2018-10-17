@@ -37,9 +37,14 @@ class ViewCompnonent extends Component{
             } 
         }
     }
-
+    componentWillUnmount(){
+        if( this.props.message.text !==""){
+            this.props.updateMessage("", "m_green");
+        } 
+    }
     addRecipe(recipeAdd){ 
         let toSend = {
+            account: this.props.profile.email,
             uri: recipeAdd.uri,
             label: recipeAdd.label,
             image: recipeAdd.image,
@@ -63,27 +68,32 @@ class ViewCompnonent extends Component{
                 this.props.updateSaved();
             })
     }
-    removeRecipe(recipeDelete){ 
-        let toSend = {
-            deleteRecipe: recipeDelete
-        }
-        fetch('/gr', {
-                method: 'DELETE',
-                headers: {
-                    "Content-Type": "application/json"
-                  },
-                body: JSON.stringify(toSend) 
-            }).then(resp =>{
-                return(resp.json())
-            }).then(data =>{
-                this.setState({ recSaved: false})
-                this.props.updateSaved();
-            })
+    removeRecipe(recipeDelete){
+        if(window.confirm("Do you want to remove this recipe?")){
+            let toSend = {
+                account: this.props.profile.email,
+                deleteRecipe: recipeDelete
+            }
+            fetch('/gr', {
+                    method: 'DELETE',
+                    headers: {
+                        "Content-Type": "application/json"
+                      },
+                    body: JSON.stringify(toSend) 
+                }).then(resp =>{
+                    return(resp.json())
+                }).then(data =>{
+                    this.setState({ recSaved: false})
+                    this.props.updateSaved();
+                })
+        } 
     }
     addIngredients(){
         for(let i=0; i<this.viewRecipe['ingredients'].length; i++){
             this.props.addShoppingList( this.viewRecipe['ingredients'][i].text )
         }
+        this.props.serverList("savelist"); 
+        this.props.updateMessage("Items have been added", "m_green");
     }
 
     render(props){ 
@@ -103,7 +113,7 @@ class ViewCompnonent extends Component{
                     <div className='btnGroup'> 
                         { this.backButton }
                         <a href={ this.viewRecipe.url } className='btn' target="_blank">Go to recipe</a> 
-                        <button className='btn' onClick={()=> this.addIngredients() }>Add ingredients to list</button>
+                        <button className='btn' onClick={()=> this.addIngredients() }>Add to list</button>
                         { saveButton }
                     </div>
                 </div>

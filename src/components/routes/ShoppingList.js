@@ -2,22 +2,17 @@ import React, { Component } from 'react';
 import '../../styles/ShoppingList.css';
 
 
-class ShoppingList extends Component{
+class ShoppingList extends Component{ 
     handleAddNew = () =>{
         if( document.getElementById("listBox").value !== ""){
             this.props.addShoppingList( document.getElementById("listBox").value );
             document.getElementById("listBox").value = "";
         }
     }
-    emailList = () =>{
-        fetch('/sendlist', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({
-                "list": this.props.shoppingList,
-                "sendTo": "christopher13e11@gmail.com"
-            })
-        })
+    componentWillUnmount(){
+        if( this.props.message.text !==""){
+            this.props.updateMessage("", "m_green");
+        } 
     }
     render(){
         let list;
@@ -28,20 +23,22 @@ class ShoppingList extends Component{
                 return (
                 <li key={index}>
                     <p className={ iNeed.status }>{iNeed.item}</p>
-                    <button className={"btn"} onClick={ ()=> this.props.setGot(index) } >Got it!</button>
-                    <button className={"btn btn_red"} onClick={ ()=> this.props.deleteListItem(index) }>Delete</button>
+                    <button className={"btn"} onClick={ ()=> {this.props.setGot(index); this.props.serverList("savelist") }} >Got it!</button>
+                    <button className={"btn btn_red"} onClick={ async () => { 
+                        await this.props.deleteListItem(index); 
+                        this.props.serverList("savelist") }}>Delete</button>
                 </li>);
             });
         }
         return(
-            <div id={"shoppingList"}>
+            <div id="shoppingList">
                 <h3>Shopping list</h3> 
                 <ol> { list } </ol>
                 <input type='text' placeholder='Add item to shopping list' id='listBox' className='textBlock'></input>
                 <div className='btnGroup'>  
-                <button className='btn' onClick={ ()=> this.handleAddNew() }>Add item</button>
-                <button className='btn' onClick={ ()=> this.props.updateShoppingList() }>temp update</button>
-                <button className='btn' onClick={ ()=> this.emailList() }>Send</button>
+                    <button className='btn' onClick={ ()=> {this.handleAddNew(); this.props.serverList("savelist") }}>Add item</button>
+                    <button className='btn btn_blue' onClick={ ()=> this.props.serverList("sendlist") }>Send</button>
+                    <button className='btn btn_red' onClick={ async ()=> { await this.props.deleteListItem("all"); this.props.serverList("savelist") } }>Clear List</button>
                 </div>
             </div>
         );

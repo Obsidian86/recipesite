@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class SearchComponent extends Component{ 
-    handleClick = (event) =>{ 
-        //event.preventDefault();
+    handleClick = (event) =>{  
         this.props.onClick(event, this.searchField); 
     }
     handleChange = (event) =>{
