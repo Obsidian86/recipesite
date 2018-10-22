@@ -7,6 +7,7 @@ import ViewSaved from './routes/ViewSaved';
 import ShoppingList from './routes/ShoppingList'; 
 import ProfileComponent from './routes/ProfileComponent'; 
 import ErrorComponent from './ErrorComponent';
+import { apiCall } from '../services/api';
 
 class MainBodyComponent extends Component{
 
@@ -22,66 +23,29 @@ class MainBodyComponent extends Component{
         });
     }
     //Initial Search
-    onClick = (event, foodsez)=>{  
-        this.setState({ searchDone: true });
-        fetch('gr/search', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({
-                "searchFor": foodsez
-            })
-        }) 
-        .then( resp => resp.json() )
-        .then( resp => { 
-            this.setState({ recipes: resp.hits });
-            this.props.updateSearch();
-        }); 
+    onClick = async (event, foodsez)=>{ 
+        this.setState({searchDone: true}); 
+        let searchRecipes = await apiCall("POST", `gr/${this.props.profile.id}/search`,  {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, {"searchFor": foodsez });
+        this.setState({ recipes: searchRecipes.hits });
+        this.props.updateSearch(); 
     }
-    updateSaved=()=>{
-        fetch(`/gr/${this.props.profile.id}/getrecipes`, {
-            method: "GET",
-            headers: {'Content-Type':'application/json', 'Accept': 'application/json', "Authorization": `Bearer: ${this.props.profile.auth}`}
-        })
-        .then((response) => {  
-            return response.json(); 
-        }) 
-        .then((data) => { 
-            this.setState({ savedRecipes: data }); 
-            console.log( data);
-            if( data.hits.length > 0){
-                this.props.setLoaded(true);
-            }else{
-                this.props.setLoaded(false);
-            }
-        })
+    updateSaved = async () =>{ 
+        let url = `/gr/${this.props.profile.id}/getrecipes`;
+        let getSaved = await apiCall("GET", url, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, false); 
+        let parseRecs = getSaved.hits.map(rec => {return {recipe: rec};}); 
+        this.setState({ savedRecipes: parseRecs }); 
+        this.props.setLoaded( getSaved.hits.length > 0 ); 
     } 
-    serverList = (command) =>{ 
-        fetch(`/sl/${command}`, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({
-                "list": this.state.shoppingList,
-                "sendTo": this.props.profile.email
-            })
-        })
-        .then(resp => resp.json())
-        .then(resp =>{ 
-            if( resp.sent !== "ok" ){
-                this.props.updateMessage(resp.sent, "m_green");
-            } 
-        })
-        .catch(err =>{
-            this.props.updateMessage("There was a problem. Please try again.", "m_red");
-        })  
+    serverList = async (command) =>{   
+        let url = `/sl/${this.props.profile.id}/${command}`;  
+        let listAction = await apiCall("POST", url, {"Authorization": `Bearer: ${sessionStorage.getItem('ax') }`}, { "list": this.state.shoppingList});
+        console.log( listAction )
     }
-    snycList = () =>{
-       /* if( this.state.shoppingList.length < 1){
-            fetch(`sl/getlist/${this.props.profile.email}`) 
-            .then( resp => resp.json() )
-            .then( resp => {
-                resp.list.length > 0 && this.setState({ shoppingList: resp.list });
-            })
-        } */
+    snycList = async() =>{
+       if( this.state.shoppingList.length < 1){
+            let getList = await apiCall("GET", `sl/${this.props.profile.id}/getlist`, {"Authorization": `Bearer: ${sessionStorage.getItem('ax') }`}, null);
+            getList.length > 0 && this.setState({ shoppingList: getList });
+       }       
     }
     addShoppingList = (newItem)=>{
         let tList = this.state.shoppingList;

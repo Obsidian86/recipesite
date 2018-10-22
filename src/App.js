@@ -4,6 +4,7 @@ import HeaderComponent from './components/HeaderComponents/HeaderComponent';
 import MainBodyComponent from './components/MainBodyComponent';
 import { BrowserRouter as Router} from 'react-router-dom';
 import LoginComponent from './components/LoginComponent';
+import { apiCall } from './services/api';
 
 class App extends Component {
   
@@ -19,10 +20,10 @@ class App extends Component {
       },
       profile:{
         email:  "",
-        id: "",
-        auth: ""
+        id: ""
       }
     });
+    this.logToggle.bind(this);
   }
 
   updateMessage = (text, cName)=>{ 
@@ -37,7 +38,7 @@ class App extends Component {
   setLoaded = (status) => {
     this.setState({ loadSaved: status });
   }
-  logToggle = (logSwitch, ...rest) =>{ 
+  logToggle = async (logSwitch, ...rest)=>{ 
     let URL = rest.length < 3 ? "/profile/login" : "/profile/register";
     
     //if multiple password fields don't exist
@@ -68,26 +69,18 @@ class App extends Component {
     }
 
     //If no errors
+   
     if( logSwitch ){
-      fetch(URL, {
-        method: 'POST',
-        headers: {'Content-Type':'application/json', 'Accept': 'application/json'},
-        body: JSON.stringify({
-            "email": rest[0],
-            "password": rest[1]
-        })
-      })
-        .then(resp => resp.json())
-        .then( resp => { 
-         if(!resp.username){
-           this.updateMessage(resp.error.message, "m_red");
-         }else{
-            this.setState({
-              loggedIn: true,
-              profile:{ email:  resp.username, id: resp.id, auth: resp.token }
-            });
-          }
+      let logData = await apiCall("POST", URL, {},{"email": rest[0], "password": rest[1] });
+      if( !logData.username ){
+        this.updateMessage(logData.error.message, "m_red"); 
+      }else{
+        sessionStorage.setItem("ax", logData.token); 
+        this.setState({
+          loggedIn: true,
+          profile:{ email:  logData.username, id: logData.id }
         });
+      }
     }else{
       this.setState({
         loggedIn: false,

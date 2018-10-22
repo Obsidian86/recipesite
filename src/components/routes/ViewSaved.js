@@ -18,7 +18,7 @@ class ViewSaved extends Component{
 
         }
     let recipeView = this.state.savedRecipes.length < 1 ? <h3> {"Loading..."} </h3> : 
-        <ResultsComponent results={this.state.savedRecipes.hits} title={ "Your saved recipes" } {...this.props} />
+        <ResultsComponent results={this.state.savedRecipes} title={ "Your saved recipes" } {...this.props} />
     return( <div> { recipeView } </div>  );
         
     };

@@ -6,15 +6,13 @@ class ResultsComponent extends Component{
 
     constructor(){
         super();
-        this.state = ({
-            viewList: "saved"
-        });
+        this.state = ({ viewList: "saved" });
     }
 
     handleClick(thisRec){
         this.props.setViewRec(thisRec, this.state.viewList); 
     }
-    componentWillMount(){
+    componentWillMount(){  
         if( this.props.title === "Recipes" ){ 
             this.setState({ viewList: "recipes"})
         }else{
@@ -22,27 +20,26 @@ class ResultsComponent extends Component{
         }
     }
     checkExists(thisRec){ 
-        let cl = "recipeCard"; 
-        for(let i=0; i< this.props.savedRecipes.hits.length; i++){ 
-            if(this.props.savedRecipes.hits[i].recipe.uri === thisRec){
+        let cl = "recipeCard";  
+        
+       for(let i=0; i< this.props.savedRecipes.length; i++){ 
+            if(this.props.savedRecipes[i].recipe.uri === thisRec){
                 cl += " isSaved";
             }
         }
         return(cl);
     }
-    render(props){   
-           //If list is search check if search btn was pressed 
-
+    render(props){    
            if( this.state.viewList === "recipes"){
                 if( !this.props.searchDone){
                     return(<Redirect to="/" />); 
                 }
-           }
+           } 
             if( this.props.results.length < 1 && this.state.viewList === "saved"){
                 return(<Redirect to="/" />);
             }else{
                 let results = this.props.results.map((recipe, index) => { 
-                    return(
+                    return( 
                         <li className={ this.checkExists(recipe["recipe"].uri) } key={ index }>
                             <div className="imgCont"><img src={recipe["recipe"].image} alt='food' /></div>
                             <p className="title">{recipe["recipe"].label}</p> 
@@ -59,7 +56,7 @@ class ResultsComponent extends Component{
                     </div>
                 );
             } //End IF
-    }
+    } 
 }
 
 export default ResultsComponent;

@@ -1,18 +1,17 @@
 import React, {Component} from 'react'; 
 import { Link, Redirect } from 'react-router-dom';
+import { apiCall } from '../../services/api';
 
 class ViewCompnonent extends Component{
     constructor(props){
-        super(props);  
-
+        super(props);   
         if(this.props.viewList === "recipes"){
             this.backButton = <Link to='results' className='btn btn_red'>Back to results </Link>
             this.filtList = this.props.results;
         }else{
             this.backButton = <Link to='saved' className='btn btn_red'>Back to results </Link>
-            this.filtList = this.props.savedRecipes.hits;
-        }
-
+            this.filtList = this.props.savedRecipes;
+        } 
         if( this.props.viewRec !== ""){
             this.gRecipe = () => {
                 for(let i=0; i< this.filtList.length; i++){
@@ -30,8 +29,8 @@ class ViewCompnonent extends Component{
 
     componentWillMount(){ 
         if( this.props.viewRec !== ""){
-            for(let i=0; i<this.props.savedRecipes.hits.length; i++){
-                if(this.props.viewRec === this.props.savedRecipes.hits[i].recipe.uri ){
+            for(let i=0; i<this.props.savedRecipes.length; i++){
+                if(this.props.viewRec === this.props.savedRecipes[i].recipe.uri ){
                     this.setState({ recSaved: true })
                 }
             } 
@@ -42,50 +41,23 @@ class ViewCompnonent extends Component{
             this.props.updateMessage("", "m_green");
         } 
     }
-    addRecipe(recipeAdd){ 
-        let toSend = {
-            account: this.props.profile.email,
-            uri: recipeAdd.uri,
-            label: recipeAdd.label,
-            image: recipeAdd.image,
-            source: recipeAdd.source,
-            url: recipeAdd.url,
-            shareAs: recipeAdd.shareAs,
-            yield: recipeAdd.yield,
-            dietLabels: recipeAdd.dietLabels,
-            ingredients: recipeAdd.ingredients
-        }  
-        fetch('/gr', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                  },
-                body: JSON.stringify(toSend) 
-            }).then(resp =>{
-                return(resp.json())
-            }).then(resp => {
-                this.setState({recSaved: true})
-                this.props.updateSaved();
-            })
+    addRecipe = async (recipeAdd) =>{ 
+        recipeAdd.account = this.props.profile.email;  
+        let addRecipe = await apiCall("POST", `/gr/${this.props.profile.id}/addrecipe`, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, recipeAdd);
+        this.setState({recSaved: true});
+        this.props.updateSaved();
     }
-    removeRecipe(recipeDelete){
+    removeRecipe = async (recipeDelete) => {
         if(window.confirm("Do you want to remove this recipe?")){
             let toSend = {
                 account: this.props.profile.email,
                 deleteRecipe: recipeDelete
             }
-            fetch('/gr', {
-                    method: 'DELETE',
-                    headers: {
-                        "Content-Type": "application/json"
-                      },
-                    body: JSON.stringify(toSend) 
-                }).then(resp =>{
-                    return(resp.json())
-                }).then(data =>{
-                    this.setState({ recSaved: false})
-                    this.props.updateSaved();
-                })
+            let deleteRecipe = await apiCall("DELETE", `/gr/${this.props.profile.id}/deleterecipe`, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, toSend );
+            if( deleteRecipe.deleted === "okay"){
+                this.setState({recSaved: false});
+                this.props.updateSaved();
+            } 
         } 
     }
     addIngredients(){
