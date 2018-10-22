@@ -37,9 +37,13 @@ class MainBodyComponent extends Component{
         this.props.setLoaded( getSaved.hits.length > 0 ); 
     } 
     serverList = async (command) =>{   
-        let url = `/sl/${this.props.profile.id}/${command}`;  
-        let listAction = await apiCall("POST", url, {"Authorization": `Bearer: ${sessionStorage.getItem('ax') }`}, { "list": this.state.shoppingList});
-        console.log( listAction )
+        let url = `/sl/${this.props.profile.id}/${command}`;
+        let body = { "list": this.state.shoppingList };
+        if( command === "sendlist"){
+            body.sendTo = this.props.profile.email;
+        }
+        let listAction = await apiCall("POST", url, {"Authorization": `Bearer: ${sessionStorage.getItem('ax') }`}, body);
+        return(listAction);
     }
     snycList = async() =>{
        if( this.state.shoppingList.length < 1){

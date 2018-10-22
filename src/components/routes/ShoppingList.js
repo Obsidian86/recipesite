@@ -37,7 +37,14 @@ class ShoppingList extends Component{
                 <input type='text' placeholder='Add item to shopping list' id='listBox' className='textBlock'></input>
                 <div className='btnGroup'>  
                     <button className='btn' onClick={ ()=> {this.handleAddNew(); this.props.serverList("savelist") }}>Add item</button>
-                    <button className='btn btn_blue' onClick={ ()=> this.props.serverList("sendlist") }>Send</button>
+                    <button className='btn btn_blue' onClick={ async ()=> {
+                        let sendList =  await this.props.serverList("sendlist");
+                        if(sendList.sent) {
+                            this.props.updateMessage("Your list has been sent", "m_green");
+                        }else{
+                            this.props.updateMessage("We were unable to send your list. Please try again later.", "m_red");
+                        }
+                        }}>Send</button>
                     <button className='btn btn_red' onClick={ async ()=> { await this.props.deleteListItem("all"); this.props.serverList("savelist") } }>Clear List</button>
                 </div>
             </div>
