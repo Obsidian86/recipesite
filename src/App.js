@@ -39,7 +39,7 @@ class App extends Component {
     this.setState({ loadSaved: status });
   }
   logToggle = async (logSwitch, ...rest)=>{ 
-    let URL = rest.length < 3 ? "/profile/login" : "/profile/register";
+    let URL = rest.length < 3 ? "profile/login" : "profile/register";
     
     //if multiple password fields don't exist
     if( rest.length > 2 ){

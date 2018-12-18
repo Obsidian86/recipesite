@@ -52,7 +52,7 @@ class ResultsComponent extends Component{
                 return(
                     <div> 
                         <h3>{ this.props.title }</h3>
-                        <ul className="recResults">{ results }</ul>
+                        <ul className="recResults">{ this.props.results.length < 1 ? <h2>Loading recipes...</h2> : results }</ul>
                     </div>
                 );
             } //End IF

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import { Route } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import SearchComponent from './routes/SearchComponent';
 import ResultsComponent from './routes/ResultsComponent';
 import ViewCompnonent from './routes/ViewComponent'; 
@@ -30,14 +30,14 @@ class MainBodyComponent extends Component{
         this.props.updateSearch(); 
     }
     updateSaved = async () =>{ 
-        let url = `/gr/${this.props.profile.id}/getrecipes`;
+        let url = `gr/${this.props.profile.id}/getrecipes`;
         let getSaved = await apiCall("GET", url, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, false); 
         let parseRecs = getSaved.hits.map(rec => {return {recipe: rec};}); 
         this.setState({ savedRecipes: parseRecs }); 
         this.props.setLoaded( getSaved.hits.length > 0 ); 
     } 
     serverList = async (command) =>{   
-        let url = `/sl/${this.props.profile.id}/${command}`;
+        let url = `sl/${this.props.profile.id}/${command}`;
         let body = { "list": this.state.shoppingList };
         if( command === "sendlist"){
             body.sendTo = this.props.profile.email;
@@ -89,10 +89,12 @@ class MainBodyComponent extends Component{
         }
         this.setState({ shoppingList: tList });
     }   
-    render(){ 
+    render(){  
             return( 
                 <div className="mainContent">
                     {this.props.message.text !== '' && <ErrorComponent message={this.props.message} updateMessage={this.props.updateMessage} /> }
+                   
+                   <Switch>
                     <Route exact path="/" render={() => 
                             <SearchComponent 
                                 onClick={this.onClick} 
@@ -148,6 +150,9 @@ class MainBodyComponent extends Component{
                     <Route exact path="/profile" render={() =>
                         <ProfileComponent {...this.props} />
                     } />
+
+                    <Route render={() => <Redirect to="/" />} />
+                    </Switch>
                 </div> 
             ); 
     }

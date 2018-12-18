@@ -43,7 +43,7 @@ class ViewCompnonent extends Component{
     }
     addRecipe = async (recipeAdd) =>{ 
         recipeAdd.account = this.props.profile.email;  
-        let addRecipe = await apiCall("POST", `/gr/${this.props.profile.id}/addrecipe`, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, recipeAdd);
+        await apiCall("POST", `gr/${this.props.profile.id}/addrecipe`, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, recipeAdd);
         this.setState({recSaved: true});
         this.props.updateSaved();
     }
@@ -53,7 +53,7 @@ class ViewCompnonent extends Component{
                 account: this.props.profile.email,
                 deleteRecipe: recipeDelete
             }
-            let deleteRecipe = await apiCall("DELETE", `/gr/${this.props.profile.id}/deleterecipe`, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, toSend );
+            let deleteRecipe = await apiCall("DELETE", `gr/${this.props.profile.id}/deleterecipe`, {"Authorization": `Bearer: ${sessionStorage.getItem('ax')}`}, toSend );
             if( deleteRecipe.deleted === "okay"){
                 this.setState({recSaved: false});
                 this.props.updateSaved();

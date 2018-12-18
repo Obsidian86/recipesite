@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+    import React, { Component } from 'react';
 
 class LoginComponent extends Component{
     constructor(){
@@ -41,7 +41,7 @@ class LoginComponent extends Component{
                             this.props.logToggle(true, document.getElementById("usernameField").value, document.getElementById("passwordField").value, document.getElementById("rePasswordField").value)
                         }
                         
-                        }} />
+                        }} value="Submit" />
                     { logForm ? 
                         <button className="btn" onClick={(event)=>{ event.preventDefault(); this.toggleForm(); }}>Sign up</button> : 
                         <button className="btn btn_red" onClick={(event)=>{ event.preventDefault(); this.toggleForm(); }}>Back</button>
