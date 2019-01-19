@@ -23,9 +23,9 @@ class LoginComponent extends Component{
               <h3>{ logForm ? "Log in to continue" : "Register new account" } </h3>
               <form action='#'>
                 <label htmlFor='usernameField'>Email address</label>
-                <input type='email' className='textBlock' id="usernameField" required="required" autoComplete="on" placeholder="email@email.com" defaultValue='christopher13e11@gmail.com'/>
+                <input type='email' className='textBlock' id="usernameField" required="required" autoComplete="on" placeholder="email@email.com" />
                 <label htmlFor='passwordField'>Password</label>
-                <input type='password' className='textBlock' id="passwordField" required="required" autoComplete="on" placeholder="*****" defaultValue="test" />
+                <input type='password' className='textBlock' id="passwordField" required="required" autoComplete="on" placeholder="*****" />
                 { !logForm && 
                     <span>
                         <label htmlFor='passwordField'>Re-Type password</label>
